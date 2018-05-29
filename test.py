@@ -34,17 +34,21 @@ S1 = tf.placeholder(tf.int32, name="S1", shape=[None, config.statebatchsize])
 S2 = tf.placeholder(tf.int32, name="S2", shape=[None, config.statebatchsize])
 y = tf.placeholder(tf.int32, name="y", shape=[None])
 
-# Initializing the variables
 init = tf.global_variables_initializer()
-saver = tf.train.Saver()
 
-with tf.Session() as sess():
-    if config.log:
-        for var in tf.trainable_variables():
-            tf.summary.histogram(var.op.name, var)
-        summary_op = tf.summary.merge_all()
-        summary_writer = tf.summary.FileWriter(config.logdir, sess.graph)
+bias = tf.Variable(np.random.randn(1, 1, 1, config.ch_h) * 0.01, dtype=tf.float32)
+w0 = tf.Variable(np.random.randn(3, 3, config.ch_i, config.ch_h) * 0.01, dtype=tf.float32)
+w1 = tf.Variable(np.random.randn(1, 1, config.ch_h, 1) * 0.01, dtype=tf.float32)
+w = tf.Variable(np.random.randn(3, 3, 1, config.ch_q) * 0.01, dtype=tf.float32)
+v = tf.Variable(3, name='v')
+with tf.Session() as sess:
     sess.run(init)
 
-    print(sess.run(X))
+    print(X.shape)
+    print(S1.shape)
+    print(S2.shape)
+    print(y.shape)
+
+    # print(sess.run(w0))
+    print(sess.run(v))
 
